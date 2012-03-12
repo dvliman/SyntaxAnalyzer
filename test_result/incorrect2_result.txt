@@ -1,0 +1,5 @@
+dvs-MacBook-Pro:SyntaxAnalyzer dv$ ./a.out < test/incorrect2.toy 
+
+class 
+1233121 yacc error: syntax error
+dvs-MacBook-Pro:SyntaxAnalyzer dv$ 

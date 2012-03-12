@@ -1,0 +1,5 @@
+dvs-MacBook-Pro:SyntaxAnalyzer dv$ ./a.out < test/incorrect1.toy 
+
+int [Reduce 15]
+double yacc error: syntax error
+dvs-MacBook-Pro:SyntaxAnalyzer dv$ 

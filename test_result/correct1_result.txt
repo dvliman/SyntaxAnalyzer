@@ -1,0 +1,42 @@
+dvs-MacBook-Pro:SyntaxAnalyzer dv$ ./a.out < test/correct1.toy 
+
+
+
+int [Reduce 15]
+sum 
+( 
+int [Reduce 15]
+a [Reduce 12][Reduce 23]
+, 
+int [Reduce 15]
+b [Reduce 12][Reduce 22]
+) 
+{ 
+
+return [Reduce 10]
+a 
++ [Reduce 82][Reduce 66]
+b 
+; [Reduce 82][Reduce 66][Reduce 69][Reduce 62][Reduce 58][Reduce 50][Reduce 43]
+
+} [Reduce 41][Reduce 20][Reduce 6][Reduce 4]
+
+
+void 
+main 
+( 
+) [Reduce 24]
+{ 
+
+println [Reduce 10]
+( 
+sum 
+( 
+1 [Reduce 90][Reduce 65]
+, 
+2 [Reduce 90][Reduce 65]
+) [Reduce 87][Reduce 88][Reduce 85][Reduce 67]
+) [Reduce 61]
+; [Reduce 59][Reduce 51][Reduce 43]
+
+} [Reduce 41][Reduce 21][Reduce 6][Reduce 3]

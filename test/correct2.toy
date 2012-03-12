@@ -1,18 +1,11 @@
 
-class Basic {
+class Living {
   // basic living requirements 
   void breath() {
     println("Breathing...");  
   }
-
-  void speak() {
-    println("Speaking...");
-  }
 }
 
-class Human extends Basic {
-  string name = "Robo"; 
-  println(name);
-  breath();
-  speak();
+class Human extends Living {
+  // human is a living object
 }
