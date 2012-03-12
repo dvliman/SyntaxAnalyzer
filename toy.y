@@ -1,13 +1,3 @@
-/*
-// Name: Vallejos, Marcus
-// Project: #2
-// Due: 3-12-2012
-// Course: CS-411
-//
-// Description:
-// A syntactical analyzer for the Toy-based language
-*/
-
 %{
 #include <stdio.h>
 %}
