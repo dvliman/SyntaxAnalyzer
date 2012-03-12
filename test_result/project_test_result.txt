@@ -1,0 +1,90 @@
+dvs-MacBook-Pro:SyntaxAnalyzer dv$ . build.sh 
+Deleting object files ...
+Running yacc ...
+conflicts: 45 shift/reduce, 1 reduce/reduce
+Running lex ...
+Compiling ...
+Piping input.toy to the input stream ...
+
+int [Reduce 14]
+fact 
+( 
+int [Reduce 14]
+x [Reduce 12][Reduce 22]
+) 
+{ 
+
+
+if [Reduce 10]
+( 
+x 
+> [Reduce 81][Reduce 65]
+1 [Reduce 89][Reduce 64]
+) [Reduce 75]
+return 
+x 
+* [Reduce 81][Reduce 65]
+fact 
+( 
+x 
+- [Reduce 81][Reduce 65]
+1 [Reduce 89][Reduce 64]
+) [Reduce 69][Reduce 86][Reduce 84][Reduce 66]
+; [Reduce 70][Reduce 61][Reduce 57][Reduce 49]
+
+else 
+return 
+1 [Reduce 89][Reduce 64]
+; [Reduce 61][Reduce 57][Reduce 49][Reduce 53][Reduce 45][Reduce 42]
+
+} [Reduce 40][Reduce 19][Reduce 6][Reduce 4]
+
+void 
+main 
+( 
+) [Reduce 23]
+{ 
+
+
+int [Reduce 14]
+x [Reduce 12]
+; [Reduce 11]
+
+int [Reduce 14]
+total [Reduce 12]
+; [Reduce 11]
+
+println [Reduce 10][Reduce 9][Reduce 9]
+( 
+"factorial of 10 is" [Reduce 91][Reduce 64]
+, [Reduce 60]
+fact 
+( 
+10 [Reduce 89][Reduce 64]
+) [Reduce 86][Reduce 84][Reduce 66]
+, [Reduce 59]
+" from the recursive function" [Reduce 91][Reduce 64]
+) [Reduce 59]
+; [Reduce 58][Reduce 50][Reduce 42]
+
+total 
+= [Reduce 81]
+1 [Reduce 89][Reduce 64]
+; [Reduce 63][Reduce 61][Reduce 44][Reduce 41]
+x 
+= [Reduce 81]
+1 [Reduce 89][Reduce 64]
+; [Reduce 63][Reduce 61][Reduce 44][Reduce 41]
+
+for 
+( 
+; [Reduce 62]
+x 
+<= [Reduce 81][Reduce 65]
+10 [Reduce 89][Reduce 64]
+; [Reduce 74]
+) [Reduce 62]
+{ 
+total [Reduce 18]
+= yacc error: syntax error
+dvs-MacBook-Pro:SyntaxAnalyzer dv$ 
