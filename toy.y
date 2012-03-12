@@ -48,10 +48,79 @@
 %token t_id
 
 %%
-Program: exp '\n' {}
+Program: Decl {}
   ;
 
+Decl: VariableDecl { $$ = $1; }
+  | FunctionDecl   { $$ = $1; }
+  | ClassDecl      { $$ = $1; }
+  | InterfaceDecl  { $$ = $1; }
+  ;
 
+VariableDecl: Variable ';'  { $$ = $1; }
+  ;
+
+Variable: t_id  { $$ = $1; }
+  ;
+
+/** Type also can be void **/
+FunctionDecl: Type t_id '(' Formals ')' StmtBlock { printf("FunctionDecl"); }
+  ;
+
+ClassDecl: t_class Extends Implements '{' Fields '}'  { printf("ClassDecl"); }
+
+Extends: t_extends t_id { $$ = $2; }
+  |                     { $$ = NULL; }
+  ;
+
+Implements: Implements ',' t_id { $$= $3; }
+  | t_implements t_id           { $$ =$2; }
+  ;
+
+Fields: Fields VariableDecl { $$ = $2; }
+  | Fields FunctionDecl     { $$ = $2; }
+  | VariableDecl            { $$ = $1; }
+  | FunctionDecl            { $$ = $1; }
+  ;
+
+InterfaceDecl: t_interface t_id '{' Prototypes '}' {}
+  ;
+
+Prototypes: Prototypes Type t_id '(' Formals ')' ';' {}
+  | Type t_id {}
+  ; 
+
+Type: t_void    { $$ = 't_void'; }
+  | t_bool      { $$ = 't_bool'; }
+  | t_int       { $$ = 't_int';  }
+  | t_double    { $$ = 't_double'; }
+  | t_string    { $$ = 't_string'; }
+  | t_null      { $$ = 't_null'; }
+  | Type '[' ']'{ $$ = '[]'; }
+  | t_id        { $$ = 't_id'; }
+  ;
+
+FunctionDecl: 
+
+Formals: 
+
+ClassDecl:
+
+Field:
+
+InterfaceDecl:
+
+Prototype:
+
+StmtBlock:
+
+Stmt:
+
+IfStmt:
+
+WhileStmt:
+
+ForStmt: 
 
 BreakStmt: t_break t_semicolon 
   ;
@@ -62,27 +131,16 @@ ReturnStmt: t_return Expr
 PrintStmt: t_println Expr
   ; 
 
-Type: t_void { $$ = 't_void' }
-  | t_bool   { }
-// TODO: Lvalue = Expr | Constant | Lvalue | Call | ( Expr ) |  
-//        readln() | newarray(intconstant, Type)    
-Expr: Expr t_plus Expr          { $$ = $1 + $3 }
-  | Expr t_minus Expr           { $$ = $1 - $3 }
-  | Expr t_multiplication Expr  { $$ = $1 * $3 }
-  | Expr t_division Expr        { $$ = $1 / $3 }
-  | Expr t_mod Expr             { $$ = $1 % $3 }
-  | Expr t_less Expr            { $$ = $1 < $3 }
-  | Expr t_lessequal Expr       { $$ = $1 <= $3 }
-  | Expr t_greater Expr         { $$ = $1 > $3 }
-  | Expr t_greaterequal Expr    { $$ = $1 >= $3 }
-  | Expr t_equal Expr           { $$ = $1 == $3 }
-  | Expr t_notequal Expr        { $$ = $1 != $3 }
-  | Expr t_assignop Expr        { $1 = $3 }
+Expr: 
+
+Lvalue: t_id          { $$ = $1; }
+  | Expr '.' t_id     { $$ = $1 + $3; }
+  | Expr '[' Expr ']' { $$ = $1 + $3; }
   ;
 
-Lvalue: t_id 
-  | Expr t_leftbracket Expr t_rightbracket
-  ; // TODO, Define: Expr t_dot id ..... I don't have t_dot
+Call:
+
+Actuals:
 
 Constant: t_intconstant
   | t_doubleconstant
