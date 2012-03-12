@@ -1,0 +1,7 @@
+int double x = 10; /* multiple type on variable declaration */
+string a = "good";
+string b = "nice;
+string c = "best";
+int a = 0 /** VariableDecl without semicolon */
+
+

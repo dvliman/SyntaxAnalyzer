@@ -1,0 +1,18 @@
+
+class Basic {
+  // basic living requirements 
+  void breath() {
+    println("Breathing...");  
+  }
+
+  void speak() {
+    println("Speaking...");
+  }
+}
+
+class Human extends Basic {
+  string name = "Robo"; 
+  println(name);
+  breath();
+  speak();
+}

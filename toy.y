@@ -1,3 +1,13 @@
+/*
+// Name: Vallejos, Marcus
+// Project: #2
+// Due: 3-12-2012
+// Course: CS-411
+//
+// Description:
+// A syntactical analyzer for the Toy-based language
+*/
+
 %{
 #include <stdio.h>
 %}
@@ -47,109 +57,184 @@
 %token t_stringconstant
 %token t_id
 
+%right t_assignop
+%right t_or
+%right t_and
+%right t_equal t_notequal
+%nonassoc t_less t_greater t_lessequal t_greaterequal
+%left t_plus t_minus
+%left t_multiplication t_division
+
 %%
-Program: Decl {}
+Program: Dec { $$ = $1; }
   ;
 
-Decl: VariableDecl { $$ = $1; }
-  | FunctionDecl   { $$ = $1; }
-  | ClassDecl      { $$ = $1; }
-  | InterfaceDecl  { $$ = $1; }
-  ;
+Dec: Dec Decl { $$ = $2; }
+    | Decl { }
+    ;
 
-VariableDecl: Variable ';'  { $$ = $1; }
-  ;
+Decl: VariableDecl { $$ = $1; } 
+    | FunctionDecl { $$ = $1; } 
+    | ClassDecl { $$ = $1; } 
+    | InterfaceDecl { $$ = $1; }
+    ;
 
-Variable: t_id  { $$ = $1; }
-  ;
+VariableDecls: VariableDecl VariableDecls { }
+    | { }
+    ;
 
-/** Type also can be void **/
-FunctionDecl: Type t_id '(' Formals ')' StmtBlock { printf("FunctionDecl"); }
-  ;
+VariableDecl: Variable t_semicolon { $$ = $1; }
+    ;
 
-ClassDecl: t_class Extends Implements '{' Fields '}'  { printf("ClassDecl"); }
+Variable: Type t_id { $$ = $2; }
+    ;
+
+Type: t_bool    { $$ = $1; }
+    | t_int     { $$ = $1; }
+    | t_double  { $$ = $1; }
+    | t_string  { $$ = $1; }
+    | Type t_leftbracket t_rightbracket { $$ = $1; }
+    | t_id      { $$ = $1; }
+    ;
+
+FunctionDecl: Type t_id t_leftparen Formals t_rightparen StmtBlock { }
+    | t_void t_id t_leftparen Formals t_rightparen StmtBlock { }
+    ;
+
+Formals: Formals t_comma Variable { $$ = $1; } 
+    | Variable { }
+    | { }
+    ;
+
+ClassDecl: t_class t_id Extends Implements t_leftbrace Field t_rightbrace { } 
+    ;
 
 Extends: t_extends t_id { $$ = $2; }
-  |                     { $$ = NULL; }
-  ;
+    |                     { }
+    ;
 
-Implements: Implements ',' t_id { $$= $3; }
-  | t_implements t_id           { $$ =$2; }
-  ;
+Implements: t_implements IDList { $$= $2; }
+    |   { }
+    ;
 
-Fields: Fields VariableDecl { $$ = $2; }
-  | Fields FunctionDecl     { $$ = $2; }
-  | VariableDecl            { $$ = $1; }
-  | FunctionDecl            { $$ = $1; }
-  ;
+IDList: t_id t_comma IDList           { $$ =$1; }
+    |  t_id { $$ =$1; }
+    ;
 
-InterfaceDecl: t_interface t_id '{' Prototypes '}' {}
-  ;
+Field: VariableDecl { } 
+    | FunctionDecl { }
+    |   { }
+    ;
 
-Prototypes: Prototypes Type t_id '(' Formals ')' ';' {}
-  | Type t_id {}
-  ; 
+InterfaceDecl: t_interface t_id t_leftbrace Prototypes t_rightbrace { } 
+    | t_interface t_id t_leftbrace t_rightbrace { }
+    ;
 
-Type: t_void    { $$ = 't_void'; }
-  | t_bool      { $$ = 't_bool'; }
-  | t_int       { $$ = 't_int';  }
-  | t_double    { $$ = 't_double'; }
-  | t_string    { $$ = 't_string'; }
-  | t_null      { $$ = 't_null'; }
-  | Type '[' ']'{ $$ = '[]'; }
-  | t_id        { $$ = 't_id'; }
-  ;
+Prototypes: Prototype Prototypes { }
+    | { }
+    ;
 
-FunctionDecl: 
+Prototype: Type t_id t_leftparen Formals t_rightparen t_semicolon { } 
+    | t_void t_id t_leftparen Formals t_rightparen t_semicolon { }
+    ;
 
-Formals: 
+StmtBlock: t_leftbrace VariableDecls Stmts t_rightbrace { } 
+    ;
 
-ClassDecl:
+Stmts: Stmts Stmt { }
+    | { }
+    ;
 
-Field:
+Stmt: ExprOrEmpty t_semicolon { }
+    | IfStmt { } 
+    | WhileStmt { } 
+    | ForStmt { } 
+    | BreakStmt { } 
+    | ReturnStmt { } 
+    | PrintStmt { } 
+    | StmtBlock { }
+    ;
 
-InterfaceDecl:
+IfStmt: t_if t_leftparen Expr t_rightparen Stmt { } 
+    | t_if t_leftparen Expr t_rightparen Stmt t_else Stmt { }
+    ;
 
-Prototype:
+WhileStmt: t_while t_leftparen Expr t_rightparen Stmt
+    ;
 
-StmtBlock:
-
-Stmt:
-
-IfStmt:
-
-WhileStmt:
-
-ForStmt: 
+ForStmt: t_for t_leftparen ExprOrEmpty t_semicolon Expr t_semicolon ExprOrEmpty t_rightparen Stmt { } 
+    ;
 
 BreakStmt: t_break t_semicolon 
   ;
 
-ReturnStmt: t_return Expr
-  ;
+ReturnStmt: t_return ExprOrEmpty t_semicolon { } 
+    ;
 
-PrintStmt: t_println Expr
-  ; 
+PrintStmt: t_println t_leftparen ExprList t_rightparen t_semicolon { } 
+    ;
 
-Expr: 
+ExprList: ExprList t_comma Expr { $$ = $1+$3; }
+    | Expr { $$ = $1; }
+    ;
 
-Lvalue: t_id          { $$ = $1; }
-  | Expr '.' t_id     { $$ = $1 + $3; }
-  | Expr '[' Expr ']' { $$ = $1 + $3; }
-  ;
+ExprOrEmpty: Expr { $$=$1; }
+    | { }
+    ;
 
-Call:
+Expr: Lvalue t_assignop Expr { } 
+    | Constant { } 
+    | Lvalue { } 
+    | Call { } 
+    | t_leftparen Expr t_rightparen { }
+    | Expr t_plus Expr { }
+    | Expr t_minus Expr { }
+    | Expr t_multiplication Expr { }
+    | Expr t_division Expr { }
+    | t_minus Expr { }
+    | Expr t_less Expr { }
+    | Expr t_lessequal Expr { }
+    | Expr t_greater Expr { }
+    | Expr t_greaterequal Expr { }
+    | Expr t_equal Expr { }
+    | Expr t_notequal Expr { }
+    | t_readln t_leftparen t_rightparen { }
+    | t_newarray t_leftparen t_intconstant t_comma Type t_rightparen { }
+    ;
 
-Actuals:
+Lvalue: t_id { $$ = $1; }
+    | Expr t_leftbracket Expr t_rightbracket { $$ = $1 + $3; }
+    | Expr t_period t_id { $$ = $1 + $3; }
+    ;
 
-Constant: t_intconstant
-  | t_doubleconstant
-  | t_stringconstant
-  | t_boolconstant
+Call: t_id t_leftparen Actuals t_rightparen { $$ = $1+$3; } 
+    | t_id t_period t_id t_leftparen Actuals t_rightparen { $$ = $1+$3+$5; }
+    ;
+
+Actuals: Expr { $$ = $1; }
+    | Expr t_comma Actuals { $$ = $1+$3; }
+    | { }
+    ;
+
+Constant: t_intconstant { $$ = $1; }
+  | t_doubleconstant { $$ = $1; }
+  | t_stringconstant { $$ = $1; }
+  | t_boolconstant { $$ = $1; }
   ;
 
 %%
 
 int main() {
   yyparse();
+}
+
+yyerror(s)
+char *s;
+{
+    printf("yacc error: %s\n", s);
+}
+
+yywrap()
+{
+    return(0);
 }
